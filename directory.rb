@@ -60,6 +60,14 @@ def print_usingwhile(students)
     end
 end
 
+def print_centered(students)
+    puts "Here is our nicely formatted graduation attendee poster:".center(70).upcase
+    students.each do |student|
+        puts "#{student[:firstname]}".center(70, "-")
+        puts "(#{student[:cohort]} cohort)".center(70)
+    end
+end
+
 def print_footer(students)
     puts "Overall, we have #{students.count} great students"
 end
@@ -74,5 +82,7 @@ puts
 print_lessthan12(students)
 puts
 print_usingwhile(students)
+puts
+print_centered(students)
 puts
 print_footer(students)
