@@ -28,6 +28,17 @@ def print(students)
     end
 end
 
+def print_beginwitha(students)
+    puts "Register of students (with names beginning in \"A\"):"
+    students.each do |student|
+        if student[:name][0] == "a" || student[:name][0] == "A"
+            puts "\t#{student[:name]} (#{student[:cohort]} cohort)"
+        else
+            next
+        end
+    end
+end
+
 def print_footer(students)
     puts "Overall, we have #{students.count} great students"
 end
@@ -36,4 +47,7 @@ end
 students = input_students
 print_header
 print(students)
+puts
+print_beginwitha(students)
+puts
 print_footer(students)
