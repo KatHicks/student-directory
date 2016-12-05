@@ -39,6 +39,17 @@ def print_beginwitha(students)
     end
 end
 
+def print_lessthan12(students)
+    puts "Register of students (with names less than 12 characters):"
+    students.each do |student|
+        if student[:name].length < 12
+            puts "\t#{student[:name]} (#{student[:cohort]} cohort)"
+        else
+            next
+        end
+    end
+end
+
 def print_footer(students)
     puts "Overall, we have #{students.count} great students"
 end
@@ -49,5 +60,7 @@ print_header
 print(students)
 puts
 print_beginwitha(students)
+puts
+print_lessthan12(students)
 puts
 print_footer(students)
