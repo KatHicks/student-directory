@@ -1,17 +1,19 @@
 def input_students
-    puts "Please enter the names of the students"
-    puts "To finish, just hit return twice"
+    puts "Please enter the first name, last name and birthplace of each student."
+    puts "Enter each piece of information separated by a comma and space \ne.g. \"Kat, Hicks, London\""
+    puts "Hit return after each student and just hit return twice to finish."
+    puts
     # create an empty array
     students = []
     # get the first name
-    name = gets.chomp
+    details = gets.chomp.split(", ")
     # while the name is not empty, repeat this code
-    while !name.empty? do
+    while !details.empty? do
         # add the student hash to the array
-        students << {name: name, cohort: :november}
+        students << {firstname: details[0], surname: details[1], birthplace: details[2], cohort: :november}
         puts "Now we have #{students.count} students"
         # get another name from the user
-        name = gets.chomp
+        details = gets.chomp.split(", ")
     end
     # return the array of students
     students
@@ -24,15 +26,15 @@ end
 
 def print(students)
     students.each_with_index do |student, index|
-        puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+        puts "#{index + 1}. #{student[:firstname]} (#{student[:cohort]} cohort)"
     end
 end
 
 def print_beginwitha(students)
     puts "Register of students (with names beginning in \"A\"):"
     students.each do |student|
-        if student[:name][0] == "a" || student[:name][0] == "A"
-            puts "\t#{student[:name]} (#{student[:cohort]} cohort)"
+        if student[:firstname][0] == "a" || student[:firstname][0] == "A"
+            puts "\t#{student[:firstname]} (#{student[:cohort]} cohort)"
         else
             next
         end
@@ -42,8 +44,8 @@ end
 def print_lessthan12(students)
     puts "Register of students (with names less than 12 characters):"
     students.each do |student|
-        if student[:name].length < 12
-            puts "\t#{student[:name]} (#{student[:cohort]} cohort)"
+        if student[:firstname].length < 12
+            puts "\t#{student[:firstname]} (#{student[:cohort]} cohort)"
         else
             next
         end
@@ -53,7 +55,7 @@ end
 def print_usingwhile(students)
     count = 0
     while count < students.length
-        puts "#{students[count][:name]} (#{students[count][:cohort]} cohort)"
+        puts "#{students[count][:firstname]} (#{students[count][:cohort]} cohort)"
         count += 1
     end
 end
