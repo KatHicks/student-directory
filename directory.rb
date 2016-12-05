@@ -50,6 +50,14 @@ def print_lessthan12(students)
     end
 end
 
+def print_usingwhile(students)
+    count = 0
+    while count < students.length
+        puts "#{students[count][:name]} (#{students[count][:cohort]} cohort)"
+        count += 1
+    end
+end
+
 def print_footer(students)
     puts "Overall, we have #{students.count} great students"
 end
@@ -62,5 +70,7 @@ puts
 print_beginwitha(students)
 puts
 print_lessthan12(students)
+puts
+print_usingwhile(students)
 puts
 print_footer(students)
