@@ -8,7 +8,7 @@ def input_students
   % while the name is not empty, repeat this code
   when !name.empty? do
       % add the student hash to the array
-      students < {:name : name :cohort : :november}
+      students << {:name : name :cohort : :november}
       puts "Now we have #{student.count} students"
       % get another name from the user
       name = get.chomp
