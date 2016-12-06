@@ -24,7 +24,7 @@ end
 
 def print(students)
   student.each do /student/
-    puts '#[student{:name}] (#[student{:cohort}] cohort)'
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
