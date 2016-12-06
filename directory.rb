@@ -7,6 +7,8 @@ def prompt
         cohort: :unknown
     }
     
+    spellcheck = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    
     puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
     puts "Hit enter at the end to finish or \"-\" to enter another student.\n"
     
@@ -24,7 +26,11 @@ def prompt
     
     puts "Enter cohort:"
     month = gets.chomp
-    if !month.empty? then details[:cohort] = month.downcase.to_sym end
+    if !month.empty? 
+        spellcheck.each do |x|
+            if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
+        end
+    end
     
     return details
 end
