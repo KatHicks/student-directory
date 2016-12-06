@@ -4,13 +4,8 @@ def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
     puts "3. Save the list to students.csv"
+    puts "4. Load the list from students.csv"
     puts "9. Exit" # 9 because we'll be adding more items
-end
-
-def show_students
-    print_header
-    print_students_list
-    print_footer
 end
 
 def process(selection)
@@ -21,6 +16,8 @@ def process(selection)
         show_students
     when "3"
         save_students
+    when "4"
+        load_students
     when "9"
         exit # this will cause the program to terminate
     else
@@ -35,14 +32,29 @@ def interactive_menu
     end
 end
 
+def show_students
+    print_header
+    print_students_list
+    print_footer
+end
+
 def save_students
     # open the file for writing
     file = File.open("students.csv", "w")
     # iterate over the array of students
     @students.each do |student|
-        student_data = [student[:name], student[:cohort]]
+        student_data = [student[:firstname], student[:cohort]]
         csv_line = student_data.join(",")
         file.puts csv_line
+    end
+    file.close
+end
+
+def load_students
+    file = File.open("students.csv", "r")
+    file.readlines.each do |line|
+        name, cohort = line.chomp.split(',')
+        @students << {firstname: name, cohort: cohort.to_sym}
     end
     file.close
 end
@@ -160,29 +172,6 @@ interactive_menu
 
 # -------------------------------------------------------------------------------
 
-# nothing happens until we call the methods
-# uncomment out the methods to test - but commented here to make output more readable for current exercise
-
-# students = input_students
-# print_header
-# print(students)
-# print_beginwitha(students)
-# print_lessthan12(students)
-# print_usingwhile(students)
-# print_centered(students)
-# print_all(students)
-# print_bycohort(students)
-# print_footer(students)
-
-# using an if statemnet to only print the list if there is at least one student
-
-# if !students.empty?
-#     print(students)
-# end
-
-# can also use an unless statement
-# print(students) unless students.empty?
-
 def print_all(students)
     students.each do |student|
         puts "#{student[:firstname]} #{student[:surname]} | #{student[:birthplace]} | Cohort: #{student[:cohort]}"
@@ -254,3 +243,26 @@ def print_bycohort(students)
         end
     end
 end
+
+# nothing happens until we call the methods
+# uncomment out the methods to test - but commented here to make output more readable for current exercise
+
+# students = input_students
+# print_header
+# print(students)
+# print_beginwitha(students)
+# print_lessthan12(students)
+# print_usingwhile(students)
+# print_centered(students)
+# print_all(students)
+# print_bycohort(students)
+# print_footer(students)
+
+# using an if statemnet to only print the list if there is at least one student
+
+# if !students.empty?
+#     print(students)
+# end
+
+# can also use an unless statement
+# print(students) unless students.empty?
