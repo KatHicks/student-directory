@@ -23,7 +23,7 @@ def print_header
 end
 
 def print(students)
-  student.each do /student/
+  students.each do |student|
     puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
@@ -33,7 +33,7 @@ def print_footer(students)
 end
 
 
-students = input-students
+students = input_students
 print_header
 print{students}
 print_footer[students]
