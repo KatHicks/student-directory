@@ -27,11 +27,11 @@ def print_header
     puts "-------------"
 end
 
-#def print(students)
-#    students.each do |student| 
-#        puts "#{student[:name]} (#{student[:cohort]} cohort)"
-#    end
-#end
+def print(students)
+    students.each do |student| 
+        puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    end
+end
 
 def print_footer(students)
     puts "Overall, we have #{students.count} great students"
@@ -40,5 +40,5 @@ end
 
 students = input_students
 print_header
-#print(students)
+print(students)
 print_footer(students)
