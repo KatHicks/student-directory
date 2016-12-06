@@ -1,22 +1,31 @@
+@students = [] # an empty array accessible to all methods (global variable)
+
+def print_menu
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" # 9 because we'll be adding more items
+end
+
+def show_students
+    print_header
+    print
+    print_footer
+end
+
 def interactive_menu
-    students = []
     loop do
         # 1. print the menu and ask the user what do to
-        puts "1. Input the students"
-        puts "2. Show the students"
-        puts "9. Exit" # 9 because we'll be adding more items
+        print_menu
         # 2. read the input and save it into a variable
         selection = gets.chomp
         # 3. do what the user asked
         case selection
         when "1"
             # input the students
-            students = input_students
+            input_students
         when "2"
             # show the students
-            print_header
-            print(students)
-            print_footer(students)
+            show_students
         when "9"
             exit # this will cause the program to terminate
         else
@@ -96,40 +105,70 @@ end
 
 def input_students
     # create an empty array
-    students = []
-    details = prompt(students)
+    details = prompt(@students)
     
     # add student hash to the array
     if !details.empty?
-        students << details
-        puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
+        @students << details
+        puts @students.count == 1 ? "Now we have #{@students.count} student." : "Now we have #{@students.count} students."
         puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
         enter = gets.gsub("\n", "")
         
         while !enter.empty?
             # continuing adding the student hashes to the array
-            details = prompt(students)
-            students << details
-            puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
+            details = prompt(@students)
+            @students << details
+            puts @students.count == 1 ? "Now we have #{@students.count} student." : "Now we have #{@students.count} students."
             puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
             enter = gets.gsub("\n", "")
         end
     end
     
     # return the array of students
-    students
+    @students
 end
 
 def print_header
-    puts "The students of Villains Academy"
+    puts "\nThe students of Villains Academy"
     puts "-------------"
 end
 
-def print(students)
-    students.each_with_index do |student, index|
+def print
+    @students.each_with_index do |student, index|
         puts "#{index + 1}. #{student[:firstname]} (#{student[:cohort]} cohort)"
     end
 end
+
+def print_footer
+    puts "Overall, we have #{@students.count} great students.\n"
+end
+
+interactive_menu
+
+# -------------------------------------------------------------------------------
+
+# nothing happens until we call the methods
+# uncomment out the methods to test - but commented here to make output more readable for current exercise
+
+# students = input_students
+# print_header
+# print(students)
+# print_beginwitha(students)
+# print_lessthan12(students)
+# print_usingwhile(students)
+# print_centered(students)
+# print_all(students)
+# print_bycohort(students)
+# print_footer(students)
+
+# using an if statemnet to only print the list if there is at least one student
+
+# if !students.empty?
+#     print(students)
+# end
+
+# can also use an unless statement
+# print(students) unless students.empty?
 
 def print_all(students)
     students.each do |student|
@@ -202,32 +241,3 @@ def print_bycohort(students)
         end
     end
 end
-
-def print_footer(students)
-    puts "Overall, we have #{students.count} great students"
-end
-
-# nothing happens until we call the methods
-# uncomment out the methods to test - but commented here to make output more readable for current exercise
-
-# students = input_students
-# print_header
-# print(students)
-# print_beginwitha(students)
-# print_lessthan12(students)
-# print_usingwhile(students)
-# print_centered(students)
-# print_all(students)
-# print_bycohort(students)
-# print_footer(students)
-
-# using an if statemnet to only print the list if there is at least one student
-
-# if !students.empty?
-#     print(students)
-# end
-
-# can also use an unless statement
-# print(students) unless students.empty?
-
-interactive_menu
