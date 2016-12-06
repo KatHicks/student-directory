@@ -112,6 +112,34 @@ def print_centered(students)
     end
 end
 
+def existing_cohorts(students)
+    cohorts = []
+    students.each do |x|
+        if cohorts.empty?
+            cohorts << x[:cohort]
+        elsif cohorts.include? x[:cohort]
+            next
+        else
+            cohorts << x[:cohort]
+        end
+    end
+    return cohorts
+end
+
+def print_bycohort(students)
+    cohort_list = existing_cohorts(students)
+    cohort_list.each do |month|
+        puts "\nHere are the students from the #{month} cohort:"
+        students.each do |x| 
+            if x[:cohort] == month
+                puts "#{x[:firstname]} #{x[:surname]}"
+            else
+                next
+            end
+        end
+    end
+end
+
 def print_footer(students)
     puts "Overall, we have #{students.count} great students"
 end
@@ -119,16 +147,18 @@ end
 # nothing happens until we call the methods
 students = input_students
 print_header
-print(students)
-puts
-print_beginwitha(students)
-puts
-print_lessthan12(students)
-puts
-print_usingwhile(students)
-puts
-print_centered(students)
-puts
-print_all(students)
+#print(students)
+#puts
+#print_beginwitha(students)
+#puts
+#print_lessthan12(students)
+#puts
+#print_usingwhile(students)
+#puts
+#print_centered(students)
+#puts
+#print_all(students)
+#puts
+print_bycohort(students)
 puts
 print_footer(students)
