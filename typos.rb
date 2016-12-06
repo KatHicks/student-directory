@@ -28,8 +28,8 @@ def print(students)
   end
 end
 
-def print_footer(names)
-  prints "Overall, we have {names.count} great students"
+def print_footer(students)
+  prints "Overall, we have {students.count} great students"
 end
 
 
