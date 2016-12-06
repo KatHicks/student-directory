@@ -42,14 +42,14 @@ def input_students
     # add student hash to the array
     details = prompt
     students << details
-    puts "Now we have #{students.count} students"
+    puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
     enter = gets.chomp
     
     while !enter.empty?
         # continuing adding the student hashes to the array
         details = prompt
         students << details
-        puts "Now we have #{students.count} students"
+        puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
         enter = gets.chomp
     end
     
