@@ -1,4 +1,4 @@
-def prompt
+def prompt(output)
     # setting default values
     details = {
         firstname: "--",
@@ -7,28 +7,60 @@ def prompt
         cohort: :unknown
     }
     
+    # setting spelling checks for cohort entry
     spellcheck = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
-    puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
-    puts "Hit enter at the end to finish or \"-\" to enter another student.\n"
-    
-    puts "Enter first name:"
-    name = gets.gsub("\n", "")
-    if !name.empty? then details[:firstname] = name end
-    
-    puts "Enter surname:"
-    family = gets.gsub("\n", "")
-    if !family.empty? then details[:surname] = family end
-    
-    puts "Enter birthplace:"
-    place = gets.gsub("\n", "")
-    if !place.empty? then details[:birthplace] = place end
-    
-    puts "Enter cohort:"
-    month = gets.gsub("\n", "")
-    if !month.empty? 
-        spellcheck.each do |x|
-            if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
+    # initial prompt
+    if output.length < 1
+        puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
+        enter = gets.gsub("\n", "")
+        
+        if !enter.empty?
+            puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
+            
+            puts "Enter first name:"
+            name = gets.gsub("\n", "")
+            if !name.empty? then details[:firstname] = name end
+            
+            puts "Enter surname:"
+            family = gets.gsub("\n", "")
+            if !family.empty? then details[:surname] = family end
+            
+            puts "Enter birthplace:"
+            place = gets.gsub("\n", "")
+            if !place.empty? then details[:birthplace] = place end
+            
+            puts "Enter cohort:"
+            month = gets.gsub("\n", "")
+            if !month.empty? 
+                spellcheck.each do |x|
+                    if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
+                end
+            end
+        else
+            details = Hash.new
+        end
+    else
+        puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
+            
+        puts "Enter first name:"
+        name = gets.gsub("\n", "")
+        if !name.empty? then details[:firstname] = name end
+        
+        puts "Enter surname:"
+        family = gets.gsub("\n", "")
+        if !family.empty? then details[:surname] = family end
+        
+        puts "Enter birthplace:"
+        place = gets.gsub("\n", "")
+        if !place.empty? then details[:birthplace] = place end
+        
+        puts "Enter cohort:"
+        month = gets.gsub("\n", "")
+        if !month.empty? 
+            spellcheck.each do |x|
+                if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
+            end
         end
     end
     
@@ -38,19 +70,23 @@ end
 def input_students
     # create an empty array
     students = []
+    details = prompt(students)
     
     # add student hash to the array
-    details = prompt
-    students << details
-    puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
-    enter = gets.gsub("\n", "")
-    
-    while !enter.empty?
-        # continuing adding the student hashes to the array
-        details = prompt
+    if !details.empty?
         students << details
         puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
+        puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
         enter = gets.gsub("\n", "")
+        
+        while !enter.empty?
+            # continuing adding the student hashes to the array
+            details = prompt(students)
+            students << details
+            puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
+            puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
+            enter = gets.gsub("\n", "")
+        end
     end
     
     # return the array of students
@@ -145,20 +181,24 @@ def print_footer(students)
 end
 
 # nothing happens until we call the methods
+# uncomment out the methods to test - but commented here to make output more readable for current exercise
+
 students = input_students
-print_header
-#print(students)
-#puts
-#print_beginwitha(students)
-#puts
-#print_lessthan12(students)
-#puts
-#print_usingwhile(students)
-#puts
-#print_centered(students)
-#puts
-#print_all(students)
-#puts
-print_bycohort(students)
-puts
-print_footer(students)
+# print_header
+# print(students)
+# print_beginwitha(students)
+# print_lessthan12(students)
+# print_usingwhile(students)
+# print_centered(students)
+# print_all(students)
+# print_bycohort(students)
+# print_footer(students)
+
+# using an if statemnet to only print the list if there is at least one student
+
+if !students.empty?
+    print(students)
+end
+
+# can also use an unless statemnet
+# print(students) unless students.empty?
