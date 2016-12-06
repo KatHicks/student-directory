@@ -13,19 +13,19 @@ def prompt
     puts "Hit enter at the end to finish or \"-\" to enter another student.\n"
     
     puts "Enter first name:"
-    name = gets.chomp
+    name = gets.gsub("\n", "")
     if !name.empty? then details[:firstname] = name end
     
     puts "Enter surname:"
-    family = gets.chomp
+    family = gets.gsub("\n", "")
     if !family.empty? then details[:surname] = family end
     
     puts "Enter birthplace:"
-    place = gets.chomp
+    place = gets.gsub("\n", "")
     if !place.empty? then details[:birthplace] = place end
     
     puts "Enter cohort:"
-    month = gets.chomp
+    month = gets.gsub("\n", "")
     if !month.empty? 
         spellcheck.each do |x|
             if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
@@ -43,14 +43,14 @@ def input_students
     details = prompt
     students << details
     puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
-    enter = gets.chomp
+    enter = gets.gsub("\n", "")
     
     while !enter.empty?
         # continuing adding the student hashes to the array
         details = prompt
         students << details
         puts students.count == 1 ? "Now we have #{students.count} student." : "Now we have #{students.count} students."
-        enter = gets.chomp
+        enter = gets.gsub("\n", "")
     end
     
     # return the array of students
