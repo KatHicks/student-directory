@@ -19,7 +19,7 @@ end
 
 def print_header
   puts "The students of my cohort at Makers Academy'
-  puts ``-------------``
+  puts "-------------"
 end
 
 def print(students)
