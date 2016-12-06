@@ -1,20 +1,52 @@
+def prompt
+    # setting default values
+    details = {
+        firstname: "--",
+        surname: "--",
+        birthplace: "--",
+        cohort: :unknown
+    }
+    
+    puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
+    puts "Hit enter at the end to finish or \"-\" to enter another student.\n"
+    
+    puts "Enter first name:"
+    name = gets.chomp
+    if !name.empty? then details[:firstname] = name end
+    
+    puts "Enter surname:"
+    family = gets.chomp
+    if !family.empty? then details[:surname] = family end
+    
+    puts "Enter birthplace:"
+    place = gets.chomp
+    if !place.empty? then details[:birthplace] = place end
+    
+    puts "Enter cohort:"
+    month = gets.chomp
+    if !month.empty? then details[:cohort] = month.downcase.to_sym end
+    
+    return details
+end
+
 def input_students
-    puts "Please enter the first name, last name and birthplace of each student."
-    puts "Enter each piece of information separated by a comma and space \ne.g. \"Kat, Hicks, London\""
-    puts "Hit return after each student and just hit return twice to finish."
-    puts
     # create an empty array
     students = []
-    # get the first name
-    details = gets.chomp.split(", ")
-    # while the name is not empty, repeat this code
-    while !details.empty? do
-        # add the student hash to the array
-        students << {firstname: details[0], surname: details[1], birthplace: details[2], cohort: :november}
+    
+    # add student hash to the array
+    details = prompt
+    students << details
+    puts "Now we have #{students.count} students"
+    enter = gets.chomp
+    
+    while !enter.empty?
+        # continuing adding the student hashes to the array
+        details = prompt
+        students << details
         puts "Now we have #{students.count} students"
-        # get another name from the user
-        details = gets.chomp.split(", ")
+        enter = gets.chomp
     end
+    
     # return the array of students
     students
 end
@@ -27,6 +59,12 @@ end
 def print(students)
     students.each_with_index do |student, index|
         puts "#{index + 1}. #{student[:firstname]} (#{student[:cohort]} cohort)"
+    end
+end
+
+def print_all(students)
+    students.each do |student|
+        puts "#{student[:firstname]} #{student[:surname]} | #{student[:birthplace]} | Cohort: #{student[:cohort]}"
     end
 end
 
@@ -84,5 +122,7 @@ puts
 print_usingwhile(students)
 puts
 print_centered(students)
+puts
+print_all(students)
 puts
 print_footer(students)
