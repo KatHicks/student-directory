@@ -5,8 +5,8 @@
 def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
-    puts "3. Save the list to students.csv"
-    puts "4. Load the list from students.csv"
+    puts "3. Save the list to a csv file"
+    puts "4. Load the list from a csv file"
     puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -50,23 +50,25 @@ end
 # WORKING WITH CSV --------------------------------------------------------------
 
 def save_students
+    # ask user for file
+    puts "Please enter the filename (inc. extension) in which you'd like to save the data:"
+    filename = STDIN.gets.chomp
+    
     # open the file for writing
-    file = File.open("students.csv", "w")
+    file = File.open(filename, "w")
+    
     # iterate over the array of students
     @students.each do |student|
         student_data = [student[:firstname], student[:surname], student[:birthplace], student[:cohort]]
         csv_line = student_data.join(",")
         file.puts csv_line
     end
+    
     file.close
 end
 
-def load_students(filename = "students.csv")
-    if filename.nil?
-        file = File.open("students.csv", "r")
-    else
-        file = File.open(filename, "r")
-    end
+def load_file(filename)
+    file = File.open(filename, "r")
     file.readlines.each do |line|
         firstname, lastname, birthplace, cohort = line.chomp.split(',')
         push_to_array(firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym)
@@ -74,10 +76,18 @@ def load_students(filename = "students.csv")
     file.close
 end
 
-def try_load_students
+def load_students(filename = "students.csv")
+    # ask user for file
+    puts "Please enter the filename (inc. extension) that you'd like to load:"
+    filename = STDIN.gets.chomp
+    
+    load_file(filename)
+end
+
+def initial_load_students
     filename = ARGV.first # first argument from the command line
     if filename.nil?
-        load_students(filename)
+        load_file("students.csv")
         puts "No file was given on startup so loaded \"students.csv\" by default."
     elsif File.exists?(filename) # if it exists
         load_students(filename)
@@ -217,7 +227,7 @@ def print_footer
     puts "Overall, we have #{@students.count} great students.\n"
 end
 
-try_load_students
+initial_load_students
 
 interactive_menu
 
