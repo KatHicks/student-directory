@@ -55,25 +55,22 @@ def save_students
     filename = STDIN.gets.chomp
     
     # open the file for writing
-    file = File.open(filename, "w")
-    
-    # iterate over the array of students
-    @students.each do |student|
-        student_data = [student[:firstname], student[:surname], student[:birthplace], student[:cohort]]
-        csv_line = student_data.join(",")
-        file.puts csv_line
-    end
-    
-    file.close
+    File.open(filename, "w") { |f|
+        @students.each do |student|
+            student_data = [student[:firstname], student[:surname], student[:birthplace], student[:cohort]]
+            csv_line = student_data.join(",")
+            f.puts csv_line
+        end
+    }
 end
 
 def load_file(filename)
-    file = File.open(filename, "r")
-    file.readlines.each do |line|
-        firstname, lastname, birthplace, cohort = line.chomp.split(',')
-        push_to_array(firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym)
-    end
-    file.close
+    File.open(filename, "r") { |f|
+        f.readlines.each do |line|
+            firstname, lastname, birthplace, cohort = line.chomp.split(',')
+            push_to_array(firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym)
+        end
+    }
 end
 
 def load_students(filename = "students.csv")
