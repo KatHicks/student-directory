@@ -50,11 +50,22 @@ def save_students
     file.close
 end
 
+def push_to_array(args = {})
+    defaults = {
+        firstname: "--",
+        surname: "--",
+        birthplace: "--",
+        cohort: :unknown
+    }
+    args = defaults.merge(args)
+    @students << args
+end
+
 def load_students(filename = "students.csv")
     file = File.open(filename, "r")
     file.readlines.each do |line|
         firstname, lastname, birthplace, cohort = line.chomp.split(',')
-        @students << {firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym}
+        push_to_array(firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym)
     end
     file.close
 end
@@ -146,7 +157,7 @@ def input_students
     
     # add student hash to the array
     if !details.empty?
-        @students << details
+        push_to_array(details)
         puts @students.count == 1 ? "Now we have #{@students.count} student." : "Now we have #{@students.count} students."
         puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
         enter = STDIN.gets.gsub("\n", "")
@@ -154,7 +165,7 @@ def input_students
         while !enter.empty?
             # continuing adding the student hashes to the array
             details = prompt(@students)
-            @students << details
+            push_to_array(details)
             puts @students.count == 1 ? "Now we have #{@students.count} student." : "Now we have #{@students.count} students."
             puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
             enter = STDIN.gets.gsub("\n", "")
