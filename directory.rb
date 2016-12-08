@@ -20,9 +20,9 @@ end
 def process(selection)
     case selection
     when "1"
-        input_students
+        data_entry_loop
     when "2"
-        if !students.empty?
+        if !@students.empty?
             show_students
         else 
             puts "There are currently no students in the system to display."
@@ -82,52 +82,6 @@ end
 
 # USER DATA ENTRY ---------------------------------------------------------------
 
-def user_data_entry
-    details = {
-        firstname: "--",
-        surname: "--",
-        birthplace: "--",
-        cohort: :unknown
-    }
-    
-    spellcheck = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
-    puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
-            
-    puts "Enter first name:"
-    name = STDIN.gets.gsub("\n", "")
-    if !name.empty? then details[:firstname] = name end
-    
-    puts "Enter surname:"
-    family = STDIN.gets.gsub("\n", "")
-    if !family.empty? then details[:surname] = family end
-    
-    puts "Enter birthplace:"
-    place = STDIN.gets.gsub("\n", "")
-    if !place.empty? then details[:birthplace] = place end
-    
-    puts "Enter cohort:"
-    month = STDIN.gets.gsub("\n", "")
-    if !month.empty? 
-        spellcheck.each do |x|
-            if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
-        end
-    end
-    
-    return details
-end
-
-def push_to_array(args = {})
-    defaults = {
-        firstname: "--",
-        surname: "--",
-        birthplace: "--",
-        cohort: :unknown
-    }
-    args = defaults.merge(args)
-    @students << args
-end
-
 def prompt(output)
     if output.length < 1
         puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
@@ -145,7 +99,69 @@ def prompt(output)
     return details
 end
 
-def input_students
+def spellcheck(input_month)
+    test = [
+        "January", 
+        "February", 
+        "March", 
+        "April", 
+        "May", 
+        "June", 
+        "July", 
+        "August", 
+        "September", 
+        "October", 
+        "November", 
+        "December"]
+        
+    test.each do |x|
+        if input_month[0..2].downcase == x[0..2].downcase then input_month = x.downcase.to_sym end
+    end
+    
+    return input_month
+end
+
+def user_data_entry
+    details = {
+        firstname: "--",
+        surname: "--",
+        birthplace: "--",
+        cohort: :unknown
+    }
+    
+    puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
+            
+    puts "Enter first name:"
+    name = STDIN.gets.gsub("\n", "")
+    if !name.empty? then details[:firstname] = name end
+    
+    puts "Enter surname:"
+    family = STDIN.gets.gsub("\n", "")
+    if !family.empty? then details[:surname] = family end
+    
+    puts "Enter birthplace:"
+    place = STDIN.gets.gsub("\n", "")
+    if !place.empty? then details[:birthplace] = place end
+    
+    puts "Enter cohort:"
+    month = STDIN.gets.gsub("\n", "")
+    if !month.empty? then details[:cohort] = spellcheck(month) end
+    
+    return details
+end
+
+def push_to_array(args = {})
+    defaults = {
+        firstname: "--",
+        surname: "--",
+        birthplace: "--",
+        cohort: :unknown
+    }
+    args = defaults.merge(args)
+    @students << args
+end
+
+def data_entry_loop
     # create an empty array
     details = prompt(@students)
     
@@ -277,7 +293,7 @@ end
 # uncomment out the methods to test
 # commented here to make output more readable for current exercise
 
-# students = input_students
+# students = data_entry_loop
 # print_header
 # print(students)
 # print_beginwitha(students)
