@@ -43,7 +43,7 @@ def save_students
     file = File.open("students.csv", "w")
     # iterate over the array of students
     @students.each do |student|
-        student_data = [student[:firstname], student[:cohort]]
+        student_data = [student[:firstname], student[:surname], student[:birthplace], student[:cohort]]
         csv_line = student_data.join(",")
         file.puts csv_line
     end
@@ -53,8 +53,8 @@ end
 def load_students(filename = "students.csv")
     file = File.open(filename, "r")
     file.readlines.each do |line|
-        name, cohort = line.chomp.split(',')
-        @students << {firstname: name, cohort: cohort.to_sym}
+        firstname, lastname, birthplace, cohort = line.chomp.split(',')
+        @students << {firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym}
     end
     file.close
 end
