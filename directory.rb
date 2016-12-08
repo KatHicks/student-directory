@@ -1,5 +1,7 @@
 @students = [] # an empty array accessible to all methods (global variable)
 
+# INTERACTIVE MENU --------------------------------------------------------------
+
 def print_menu
     puts "1. Input the students"
     puts "2. Show the students"
@@ -20,7 +22,12 @@ def process(selection)
     when "1"
         input_students
     when "2"
-        show_students
+        if !students.empty?
+            show_students
+        else 
+            puts "There are currently no students in the system to display."
+        end
+        # can also use an unless statement: print(students) unless students.empty?
     when "3"
         save_students
     when "4"
@@ -32,22 +39,7 @@ def process(selection)
     end
 end
 
-def show_students
-    print_header
-    print_students_list
-    print_footer
-end
-
-def push_to_array(args = {})
-    defaults = {
-        firstname: "--",
-        surname: "--",
-        birthplace: "--",
-        cohort: :unknown
-    }
-    args = defaults.merge(args)
-    @students << args
-end
+# WORKING WITH CSV --------------------------------------------------------------
 
 def save_students
     # open the file for writing
@@ -88,8 +80,9 @@ def try_load_students
     end
 end
 
-def prompt(output)
-    # setting default values
+# USER DATA ENTRY ---------------------------------------------------------------
+
+def user_data_entry
     details = {
         firstname: "--",
         surname: "--",
@@ -97,61 +90,56 @@ def prompt(output)
         cohort: :unknown
     }
     
-    # setting spelling checks for cohort entry
     spellcheck = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     
-    # initial prompt
+    puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
+            
+    puts "Enter first name:"
+    name = STDIN.gets.gsub("\n", "")
+    if !name.empty? then details[:firstname] = name end
+    
+    puts "Enter surname:"
+    family = STDIN.gets.gsub("\n", "")
+    if !family.empty? then details[:surname] = family end
+    
+    puts "Enter birthplace:"
+    place = STDIN.gets.gsub("\n", "")
+    if !place.empty? then details[:birthplace] = place end
+    
+    puts "Enter cohort:"
+    month = STDIN.gets.gsub("\n", "")
+    if !month.empty? 
+        spellcheck.each do |x|
+            if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
+        end
+    end
+    
+    return details
+end
+
+def push_to_array(args = {})
+    defaults = {
+        firstname: "--",
+        surname: "--",
+        birthplace: "--",
+        cohort: :unknown
+    }
+    args = defaults.merge(args)
+    @students << args
+end
+
+def prompt(output)
     if output.length < 1
         puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
         enter = STDIN.gets.gsub("\n", "")
         
-        if !enter.empty?
-            puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
-            
-            puts "Enter first name:"
-            name = STDIN.gets.gsub("\n", "")
-            if !name.empty? then details[:firstname] = name end
-            
-            puts "Enter surname:"
-            family = STDIN.gets.gsub("\n", "")
-            if !family.empty? then details[:surname] = family end
-            
-            puts "Enter birthplace:"
-            place = STDIN.gets.gsub("\n", "")
-            if !place.empty? then details[:birthplace] = place end
-            
-            puts "Enter cohort:"
-            month = STDIN.gets.gsub("\n", "")
-            if !month.empty? 
-                spellcheck.each do |x|
-                    if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
-                end
-            end
+        if !enter.empty? # if user has not hit enter, repeat user data entry prompt sequence
+            details = user_data_entry
         else
             details = Hash.new
         end
     else
-        puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
-            
-        puts "Enter first name:"
-        name = STDIN.gets.gsub("\n", "")
-        if !name.empty? then details[:firstname] = name end
-        
-        puts "Enter surname:"
-        family = STDIN.gets.gsub("\n", "")
-        if !family.empty? then details[:surname] = family end
-        
-        puts "Enter birthplace:"
-        place = STDIN.gets.gsub("\n", "")
-        if !place.empty? then details[:birthplace] = place end
-        
-        puts "Enter cohort:"
-        month = STDIN.gets.gsub("\n", "")
-        if !month.empty? 
-            spellcheck.each do |x|
-                if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
-            end
-        end
+        details = user_data_entry
     end
     
     return details
@@ -182,6 +170,14 @@ def input_students
     @students
 end
 
+# PRINTING THE DATA -------------------------------------------------------------
+
+def show_students
+    print_header
+    print_students_list
+    print_footer
+end
+
 def print_header
     puts "\nThe students of Villains Academy"
     puts "-------------"
@@ -201,7 +197,7 @@ try_load_students
 
 interactive_menu
 
-# -------------------------------------------------------------------------------
+# CUSTOM PRINTING METHODS -------------------------------------------------------
 
 def print_all(students)
     students.each do |student|
@@ -275,8 +271,11 @@ def print_bycohort(students)
     end
 end
 
+# EXAMPLE CALLS FOR CUSTOM PRINTING METHODS -------------------------------------
+
 # nothing happens until we call the methods
-# uncomment out the methods to test - but commented here to make output more readable for current exercise
+# uncomment out the methods to test
+# commented here to make output more readable for current exercise
 
 # students = input_students
 # print_header
@@ -288,12 +287,3 @@ end
 # print_all(students)
 # print_bycohort(students)
 # print_footer(students)
-
-# using an if statemnet to only print the list if there is at least one student
-
-# if !students.empty?
-#     print(students)
-# end
-
-# can also use an unless statement
-# print(students) unless students.empty?
