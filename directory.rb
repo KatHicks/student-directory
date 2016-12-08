@@ -9,6 +9,7 @@ def print_menu
     puts "2. Show the students"
     puts "3. Save the list to a csv file"
     puts "4. Load the list from a csv file"
+    puts "5. Print the source code for this programme"
     puts "9. Exit" # 9 because we'll be adding more items
 end
 
@@ -23,21 +24,24 @@ def process(selection)
     case selection
     when "1"
         data_entry_loop
-        feedback_message("entered")
+        feedback_message("data entered")
     when "2"
         if !@students.empty?
             show_students
-            feedback_message("printed")
+            feedback_message("data printed")
         else 
             puts "There are currently no students in the system to display."
         end
         # can also use an unless statement: print(students) unless students.empty?
     when "3"
         save_students
-        feedback_message("saved")
+        feedback_message("data saved")
     when "4"
         load_students
-        feedback_message("loaded")
+        feedback_message("data loaded")
+    when "5"
+        source_code
+        feedback_message("source code printed")
     when "9"
         exit # this will cause the program to terminate
     else
@@ -46,7 +50,18 @@ def process(selection)
 end
 
 def feedback_message(operation)
-    puts "\vDATA #{operation.upcase} SUCCESSFULLY!\v"
+    puts "\v#{operation.upcase} SUCCESSFULLY!\v"
+end
+
+# PRINTING SOURCE CODE-----------------------------------------------------------
+
+def source_code
+    File.open($0, "r") { |sc|
+        puts
+        sc.readlines.each do |line|
+            puts line
+        end
+    }
 end
 
 # WORKING WITH CSV --------------------------------------------------------------
