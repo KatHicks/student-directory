@@ -8,6 +8,13 @@ def print_menu
     puts "9. Exit" # 9 because we'll be adding more items
 end
 
+def interactive_menu
+    loop do
+        print_menu
+        process(STDIN.gets.chomp)
+    end
+end
+
 def process(selection)
     case selection
     when "1"
@@ -22,13 +29,6 @@ def process(selection)
         exit # this will cause the program to terminate
     else
         puts "I don't know what you mean. Try again!"
-    end
-end
-
-def interactive_menu
-    loop do
-        print_menu
-        process(gets.chomp)
     end
 end
 
@@ -50,13 +50,25 @@ def save_students
     file.close
 end
 
-def load_students
-    file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+    file = File.open(filename, "r")
     file.readlines.each do |line|
         name, cohort = line.chomp.split(',')
         @students << {firstname: name, cohort: cohort.to_sym}
     end
     file.close
+end
+
+def try_load_students
+    filename = ARGV.first # first argument from the command line
+    return if filename.nil? # get out of the method if it isn't given
+    if File.exists?(filename) # if it exists
+        load_students(filename)
+        puts "Loaded #{@students.count} from #{filename}"
+    else # if it doesn't exist
+        puts "Sorry, #{filename} doesn't exist."
+        exit # quit the programe
+    end
 end
 
 def prompt(output)
@@ -74,25 +86,25 @@ def prompt(output)
     # initial prompt
     if output.length < 1
         puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
-        enter = gets.gsub("\n", "")
+        enter = STDIN.gets.gsub("\n", "")
         
         if !enter.empty?
             puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
             
             puts "Enter first name:"
-            name = gets.gsub("\n", "")
+            name = STDIN.gets.gsub("\n", "")
             if !name.empty? then details[:firstname] = name end
             
             puts "Enter surname:"
-            family = gets.gsub("\n", "")
+            family = STDIN.gets.gsub("\n", "")
             if !family.empty? then details[:surname] = family end
             
             puts "Enter birthplace:"
-            place = gets.gsub("\n", "")
+            place = STDIN.gets.gsub("\n", "")
             if !place.empty? then details[:birthplace] = place end
             
             puts "Enter cohort:"
-            month = gets.gsub("\n", "")
+            month = STDIN.gets.gsub("\n", "")
             if !month.empty? 
                 spellcheck.each do |x|
                     if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
@@ -105,19 +117,19 @@ def prompt(output)
         puts "Please enter the first name, last name, birthplace and cohort of each student.\n"
             
         puts "Enter first name:"
-        name = gets.gsub("\n", "")
+        name = STDIN.gets.gsub("\n", "")
         if !name.empty? then details[:firstname] = name end
         
         puts "Enter surname:"
-        family = gets.gsub("\n", "")
+        family = STDIN.gets.gsub("\n", "")
         if !family.empty? then details[:surname] = family end
         
         puts "Enter birthplace:"
-        place = gets.gsub("\n", "")
+        place = STDIN.gets.gsub("\n", "")
         if !place.empty? then details[:birthplace] = place end
         
         puts "Enter cohort:"
-        month = gets.gsub("\n", "")
+        month = STDIN.gets.gsub("\n", "")
         if !month.empty? 
             spellcheck.each do |x|
                 if month[0..2].downcase == x[0..2].downcase then details[:cohort] = x.downcase.to_sym end
@@ -137,7 +149,7 @@ def input_students
         @students << details
         puts @students.count == 1 ? "Now we have #{@students.count} student." : "Now we have #{@students.count} students."
         puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
-        enter = gets.gsub("\n", "")
+        enter = STDIN.gets.gsub("\n", "")
         
         while !enter.empty?
             # continuing adding the student hashes to the array
@@ -145,7 +157,7 @@ def input_students
             @students << details
             puts @students.count == 1 ? "Now we have #{@students.count} student." : "Now we have #{@students.count} students."
             puts "Hit enter to exit or \"-\" to enter (a)nother student.\n"
-            enter = gets.gsub("\n", "")
+            enter = STDIN.gets.gsub("\n", "")
         end
     end
     
@@ -167,6 +179,8 @@ end
 def print_footer
     puts "Overall, we have #{@students.count} great students.\n"
 end
+
+try_load_students
 
 interactive_menu
 
