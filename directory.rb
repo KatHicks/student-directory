@@ -295,11 +295,12 @@ end
 
 # students = data_entry_loop
 # print_header
-# print(students)
+# print_students_list(students)
+# print_footer(students)
+
 # print_beginwitha(students)
 # print_lessthan12(students)
 # print_usingwhile(students)
 # print_centered(students)
 # print_all(students)
 # print_bycohort(students)
-# print_footer(students)
