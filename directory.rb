@@ -21,22 +21,30 @@ def process(selection)
     case selection
     when "1"
         data_entry_loop
+        feedback_message("entered")
     when "2"
         if !@students.empty?
             show_students
+            feedback_message("printed")
         else 
             puts "There are currently no students in the system to display."
         end
         # can also use an unless statement: print(students) unless students.empty?
     when "3"
         save_students
+        feedback_message("saved")
     when "4"
         load_students
+        feedback_message("loaded")
     when "9"
         exit # this will cause the program to terminate
     else
         puts "I don't know what you mean. Try again!"
     end
+end
+
+def feedback_message(operation)
+    puts "\vDATA #{operation.upcase} SUCCESSFULLY!\v"
 end
 
 # WORKING WITH CSV --------------------------------------------------------------
