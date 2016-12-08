@@ -1,3 +1,5 @@
+require 'csv'
+
 @students = [] # an empty array accessible to all methods (global variable)
 
 # INTERACTIVE MENU --------------------------------------------------------------
@@ -55,21 +57,17 @@ def save_students
     filename = STDIN.gets.chomp
     
     # open the file for writing
-    File.open(filename, "w") { |f|
+    CSV.open(filename, "wb") { |csv|
         @students.each do |student|
             student_data = [student[:firstname], student[:surname], student[:birthplace], student[:cohort]]
-            csv_line = student_data.join(",")
-            f.puts csv_line
+            csv << student_data
         end
     }
 end
 
 def load_file(filename)
-    File.open(filename, "r") { |f|
-        f.readlines.each do |line|
-            firstname, lastname, birthplace, cohort = line.chomp.split(',')
-            push_to_array(firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym)
-        end
+    CSV.foreach(filename) { |row|
+        push_to_array(firstname: row[0], surname: row[1], birthplace: row[2], cohort: row[3].to_sym)
     }
 end
 
