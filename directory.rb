@@ -38,6 +38,17 @@ def show_students
     print_footer
 end
 
+def push_to_array(args = {})
+    defaults = {
+        firstname: "--",
+        surname: "--",
+        birthplace: "--",
+        cohort: :unknown
+    }
+    args = defaults.merge(args)
+    @students << args
+end
+
 def save_students
     # open the file for writing
     file = File.open("students.csv", "w")
@@ -50,19 +61,12 @@ def save_students
     file.close
 end
 
-def push_to_array(args = {})
-    defaults = {
-        firstname: "--",
-        surname: "--",
-        birthplace: "--",
-        cohort: :unknown
-    }
-    args = defaults.merge(args)
-    @students << args
-end
-
 def load_students(filename = "students.csv")
-    file = File.open(filename, "r")
+    if filename.nil?
+        file = File.open("students.csv", "r")
+    else
+        file = File.open(filename, "r")
+    end
     file.readlines.each do |line|
         firstname, lastname, birthplace, cohort = line.chomp.split(',')
         push_to_array(firstname: firstname, surname: lastname, birthplace: birthplace, cohort: cohort.to_sym)
@@ -72,8 +76,10 @@ end
 
 def try_load_students
     filename = ARGV.first # first argument from the command line
-    return if filename.nil? # get out of the method if it isn't given
-    if File.exists?(filename) # if it exists
+    if filename.nil?
+        load_students(filename)
+        puts "No file was given on startup so loaded \"students.csv\" by default."
+    elsif File.exists?(filename) # if it exists
         load_students(filename)
         puts "Loaded #{@students.count} from #{filename}"
     else # if it doesn't exist
